@@ -49,7 +49,7 @@ Créer un fichier `.env`
 
 ```env
 PORT=5010
-MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
+MONGO_URI=mongodb://localhost:27017/libraryDB
 JWT_SECRET=monSuperSecret123
 ```
 
