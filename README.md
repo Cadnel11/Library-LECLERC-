@@ -1,118 +1,289 @@
 # Library Management API
 
-API REST sécurisée développée avec Node.js, Express et MongoDB.
+API REST sécurisée de gestion de bibliothèque développée avec **Node.js**, **Express** et **MongoDB**.
 
-## Technologies
+Elle permet :
 
-* Node.js
-* Express
-* MongoDB
-* JWT
-* bcryptjs
+* l'inscription et la connexion sécurisée des utilisateurs
+* l'authentification via JWT
+* la gestion des livres
+* le contrôle d'accès par rôle (User / Admin)
+* la protection des ressources par propriétaire
 
 ---
 
-## Installation
+# Technologies utilisées
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT
+* bcryptjs
+* express-validator
+
+---
+
+# Installation
+
+## Cloner le projet
 
 ```bash
 git clone <repo-url>
-cd backend
-npm install
-npm run dev
+cd library-management/backend
 ```
 
 ---
 
-## Variables d'environnement
+## Installer les dépendances
 
-Créer `.env`
+```bash
+npm install
+```
+
+---
+
+## Configurer les variables d'environnement
+
+Créer un fichier `.env`
+
+```env
+PORT=YOUR_PORT
+MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
+JWT_SECRET=YOUR_SECRET_KEY
+```
+
+Exemple :
 
 ```env
 PORT=5010
 MONGO_URI=mongodb://127.0.0.1:27017/libraryDB
-JWT_SECRET=monSuperSecret123
+JWT_SECRET=your_secret_key_here
 ```
 
 ---
 
-## Endpoints
+## Lancer le serveur
 
-### Auth
+```bash
+npm run dev
+```
 
-#### Register
+Serveur disponible sur :
 
-POST `/api/auth/register`
-
-Body:
-
-```json
-{
-  "email": "test@test.com",
-  "password": "123456"
-}
+```text
+http://localhost:5010
 ```
 
 ---
 
-#### Login
-
-POST `/api/auth/login`
-
-Body:
-
-```json
-{
-  "email": "test@test.com",
-  "password": "123456"
-}
-```
+# Endpoints API
 
 ---
 
-### Books
+# Authentification
 
-#### Liste publique
+## Register
 
-GET `/api/books`
+Créer un utilisateur
 
----
-
-#### Ajouter livre
-
-POST `/api/books`
-
-Headers:
+### Requête
 
 ```http
-Authorization: Bearer TOKEN
+POST /api/auth/register
 ```
 
-Body:
+### Body
+
+```json
+{
+  "email": "user1@test.com",
+  "password": "123456"
+}
+```
+
+### Réponse
+
+```json
+{
+  "message": "Utilisateur créé"
+}
+```
+
+---
+
+## Login
+
+Connexion utilisateur
+
+### Requête
+
+```http
+POST /api/auth/login
+```
+
+### Body
+
+```json
+{
+  "email": "user1@test.com",
+  "password": "123456"
+}
+```
+
+### Réponse
+
+```json
+{
+  "token": "JWT_TOKEN"
+}
+```
+
+---
+
+## Profile
+
+Utilisateur authentifié
+
+### Requête
+
+```http
+GET /api/auth/profile
+```
+
+### Headers
+
+```http
+Authorization: Bearer JWT_TOKEN
+```
+
+---
+
+# Livres
+
+## Récupérer tous les livres
+
+```http
+GET /api/books
+```
+
+---
+
+## Récupérer un livre
+
+```http
+GET /api/books/:id
+```
+
+Exemple :
+
+```http
+GET /api/books/683f91b8a7f5c8d21f7e1234
+```
+
+---
+
+## Ajouter un livre
+
+```http
+POST /api/books
+```
+
+### Headers
+
+```http
+Authorization: Bearer JWT_TOKEN
+```
+
+### Body
 
 ```json
 {
   "title": "Node.js",
-  "author": "Cadnel"
+  "author": "Cadnel",
+  "isbn": "9781234567890"
 }
 ```
 
 ---
 
-#### Modifier
+## Modifier un livre
 
-PUT `/api/books/:id`
+```http
+PUT /api/books/:id
+```
+
+### Headers
+
+```http
+Authorization: Bearer JWT_TOKEN
+```
 
 ---
 
-#### Supprimer
+## Supprimer un livre
 
-DELETE `/api/books/:id`
+```http
+DELETE /api/books/:id
+```
+
+### Headers
+
+```http
+Authorization: Bearer JWT_TOKEN
+```
 
 ---
 
-## Sécurité
+# Sécurité
 
-* Hash des mots de passe
-* Auth JWT
-* Contrôle propriétaire/admin
+L'API implémente :
+
+* Hash sécurisé des mots de passe avec bcryptjs
+* Authentification JWT
+* Vérification des tokens
 * Validation des entrées
+* Contrôle propriétaire des livres
+* Gestion des rôles utilisateur / admin
+
+---
+
+# Règles d'accès
+
+## Utilisateur standard
+
+Peut :
+
+* créer un livre
+* modifier ses livres
+* supprimer ses livres
+
+Ne peut pas :
+
+* modifier les livres des autres utilisateurs
+
+---
+
+## Administrateur
+
+Peut :
+
+* gérer tous les livres
+* modifier n'importe quel livre
+* supprimer n'importe quel livre
+
+---
+
+# Tests avec Postman
+
+Ajouter le header suivant pour les routes protégées :
+
+```http
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+---
+
+# Auteur
+
+Projet développé par Cadnel BLENON
