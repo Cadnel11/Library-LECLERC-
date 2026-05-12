@@ -48,18 +48,12 @@ npm install
 Créer un fichier `.env`
 
 ```env
-PORT=YOUR_PORT
-MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
-JWT_SECRET=YOUR_SECRET_KEY
-```
-
-Exemple :
-
-```env
 PORT=5010
-MONGO_URI=mongodb://127.0.0.1:27017/libraryDB
-JWT_SECRET=your_secret_key_here
+MONGO_URI=YOUR_MONGODB_CONNECTION_STRING
+JWT_SECRET=monSuperSecret123
 ```
+
+
 
 ---
 
